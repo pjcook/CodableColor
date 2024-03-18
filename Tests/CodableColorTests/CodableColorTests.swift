@@ -4,7 +4,7 @@ import XCTest
 
 final class ColorSystemTests: XCTestCase {
     
-    var colors = [
+    let colors = [
         "#E40046",
         "#F3F3F3",
         "#F7F7F7",
@@ -17,7 +17,7 @@ final class ColorSystemTests: XCTestCase {
         "#DBEBE7",
     ]
     
-    var isLightResults = [
+    let isLightResults = [
         false,
         true,
         true,
