@@ -32,7 +32,7 @@ final class ColorSystemTests: XCTestCase {
     
     func test_hexString() throws {
         for color in colors {
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             XCTAssertEqual(hexColor.hexString, color)
             XCTAssertEqual(hexColor.description, color)
         }
@@ -41,7 +41,7 @@ final class ColorSystemTests: XCTestCase {
     func test_rgb() throws {
         for color in colors {
             let uiColor = UIColor(hexString: color)
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             
             var r1: CGFloat = 0
             var g1: CGFloat = 0
@@ -59,7 +59,7 @@ final class ColorSystemTests: XCTestCase {
     func test_rgba() throws {
         for color in colors {
             let uiColor = UIColor(hexString: color)
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             
             var r1: CGFloat = 0
             var g1: CGFloat = 0
@@ -79,7 +79,7 @@ final class ColorSystemTests: XCTestCase {
     func test_hsb() throws {
         for color in colors {
             let uiColor = UIColor(hexString: color)
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             
             var h1: CGFloat = 0
             var s1: CGFloat = 0
@@ -98,7 +98,7 @@ final class ColorSystemTests: XCTestCase {
     func test_hsba() throws {
         for color in colors {
             let uiColor = UIColor(hexString: color)
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             
             var h1: CGFloat = 0
             var s1: CGFloat = 0
@@ -117,7 +117,7 @@ final class ColorSystemTests: XCTestCase {
     }
     
     func test_hsl() throws {
-        let hexColor = try CodableColor("#E40046")
+        let hexColor = CodableColor("#E40046")
         
         let h1: CGFloat = 342.0/360.0
         let s1: CGFloat = 1
@@ -132,7 +132,7 @@ final class ColorSystemTests: XCTestCase {
     }
     
     func test_rgbToHSL() throws {
-        let hexColor = try CodableColor("#E60045")
+        let hexColor = CodableColor("#E60045")
         let r1: CGFloat = 230/255
         let g1: CGFloat = 0
         let b1: CGFloat = 69/255
@@ -160,7 +160,7 @@ final class ColorSystemTests: XCTestCase {
     
     func test_rgbToHex() throws {
         for color in colors {
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             let (r1, g1, b1, a1) = hexColor.rgba
             let hex1 = CodableColor.rgbToHex(red: r1, green: g1, blue: b1)
             let hex2 = CodableColor.rgbToHex(red: r1, green: g1, blue: b1, alpha: a1)
@@ -170,7 +170,7 @@ final class ColorSystemTests: XCTestCase {
     }
     
     func test_rgbToHex_withAlpha() throws {
-        let hexColor = try CodableColor("#E4004657")
+        let hexColor = CodableColor("#E4004657")
         let (r1, g1, b1, a1) = hexColor.rgba
         let hex2 = CodableColor.rgbToHex(red: r1, green: g1, blue: b1, alpha: a1)
         XCTAssertEqual("#E4004657", hex2)
@@ -178,7 +178,7 @@ final class ColorSystemTests: XCTestCase {
     
     func test_hsl_and_rgbToHSL() throws {
         for color in colors {
-            let hexColor = try! CodableColor(color)
+            let hexColor = CodableColor(color)
             let (r1, g1, b1, a1) = hexColor.rgba
             let (h2, s2, l2, a2) = hexColor.hsla
             let (h3, s3, l3, a3) = CodableColor.rgbToHSL(red: r1, green: g1, blue: b1, alpha: a1)
@@ -191,7 +191,7 @@ final class ColorSystemTests: XCTestCase {
     
     func test_hslToRGB() throws {
         for color in colors {
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             let (r1, g1, b1, a1) = hexColor.rgba
             let (h2, s2, l2, a2) = hexColor.hsla
             let (r3, g3, b3, a3) = CodableColor.hslToRGB(hue: h2, saturation: s2, lightness: l2, alpha: a2)
@@ -204,7 +204,7 @@ final class ColorSystemTests: XCTestCase {
     }
     
     func test_hslToRGB2() throws {
-        let hexColor = try CodableColor("E60045")
+        let hexColor = CodableColor("E60045")
         let (r1, g1, b1, a1) = hexColor.rgba
         XCTAssertEqual(230/255, r1)
         XCTAssertEqual(0, g1)
@@ -219,7 +219,7 @@ final class ColorSystemTests: XCTestCase {
     
     func test_hue() throws {
         for color in colors {
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             let (r, g, b, a) = hexColor.rgba
             let (h1, _, _, _) = CodableColor.rgbToHSB(red: r, green: g, blue: b, alpha: a)
             let (h2, _, _, _) = CodableColor.rgbToHSL(red: r, green: g, blue: b, alpha: a)
@@ -228,7 +228,7 @@ final class ColorSystemTests: XCTestCase {
     }
     
     func test_hslToRGB3() throws {
-        let hexColor = try CodableColor("000000")
+        let hexColor = CodableColor("000000")
         let (r1, g1, b1, a1) = hexColor.rgba
         let (h3, s3, l3, a3) = hexColor.hsla
         let (r2, g2, b2, a2) = CodableColor.hslToRGB(hue: h3, saturation: s3, lightness: l3, alpha: a3)
@@ -241,7 +241,7 @@ final class ColorSystemTests: XCTestCase {
     func test_hslToHSB() throws {
         for color in colors {
             let uiColor = UIColor(hexString: color)
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             
             var h1: CGFloat = 0
             var s1: CGFloat = 0
@@ -262,7 +262,7 @@ final class ColorSystemTests: XCTestCase {
     
     func test_hsbToRGB() throws {
         for color in colors {
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             let (r1, g1, b1, a1) = hexColor.rgba
             let (h2, s2, b2, a2) = hexColor.hsba
             let (r3, g3, b3, a3) = CodableColor.hsbToRGB(hue: h2, saturation: s2, brightness: b2, alpha: a2)
@@ -274,30 +274,28 @@ final class ColorSystemTests: XCTestCase {
     }
     
     func test_correctHexColor() throws {
-        let hexColor1 = try CodableColor("E40046")
+        let hexColor1 = CodableColor("E40046")
         XCTAssertEqual("#E40046", hexColor1.hexString)
         
-        let hexColor2 = try CodableColor("E4004657")
+        let hexColor2 = CodableColor("E4004657")
         XCTAssertEqual("#E4004657", hexColor2.hexString)
         
-        let hexColor3 = try CodableColor("000")
+        let hexColor3 = CodableColor("000")
         XCTAssertEqual("#000", hexColor3.hexString)
     }
     
     func test_invalidHexColor() throws {
-        XCTAssertThrowsError(try CodableColor("0464"))
-        XCTAssertThrowsError(try CodableColor("#0465"))
-        let hexColor = try CodableColor("##04655")
+        let hexColor = CodableColor("##04655")
         
         // Invalid colour defaults to black
         let (r1, g1, b1, a1) = hexColor.rgba
-        let (r2, g2, b2, a2) = try! CodableColor("000000").rgba
+        let (r2, g2, b2, a2) = CodableColor("000000").rgba
         XCTAssertEqual(r1, r2)
         XCTAssertEqual(g1, g2)
         XCTAssertEqual(b1, b2)
         XCTAssertEqual(a1, a2)
         
-        let (r3, g3, b3, a3) = try! CodableColor("XXX").rgba
+        let (r3, g3, b3, a3) = CodableColor("XXX").rgba
         XCTAssertEqual(r1, r3)
         XCTAssertEqual(g1, g3)
         XCTAssertEqual(b1, b3)
@@ -314,13 +312,13 @@ final class ColorSystemTests: XCTestCase {
     
     func test_isLight() throws {
         for (color, isLight) in zip(colors, isLightResults) {
-            let hexColor = try CodableColor(color)
+            let hexColor = CodableColor(color)
             XCTAssertEqual(isLight, hexColor.isLight, "Failed: \(color)")
         }
     }
     
     func test_codable() throws {
-        let hexColor1 = try CodableColor("E40046")
+        let hexColor1 = CodableColor("E40046")
         let data = try JSONEncoder().encode(hexColor1)
         let hexColor2 = try JSONDecoder().decode(CodableColor.self, from: data)
         
@@ -348,9 +346,9 @@ final class ColorSystemTests: XCTestCase {
         let variantLightness = [0.1, 0.2, 0.3, 0.4, 0.5]
         
         for color in colors {
-            let hexColor1 = try CodableColor(color)
+            let hexColor1 = CodableColor(color)
             for (variance, expectedResult) in zip(variantLightness, lightnesses[color]!) {
-                let lighterColor = try hexColor1.applying(lightness: variance)
+                let lighterColor = hexColor1.applying(lightness: variance)
                 XCTAssertEqual(lighterColor.hexString, expectedResult)
             }
         }
@@ -361,7 +359,7 @@ final class ColorSystemTests: XCTestCase {
             let color: CodableColor
         }
         
-        let sut = TestObject(color: try CodableColor("E40046"))
+        let sut = TestObject(color: CodableColor("E40046"))
         let data = try JSONEncoder().encode(sut)
         let json = try XCTUnwrap(String(data: data, encoding: .utf8))
         let expectedResult = "{\"color\":\"#E40046\"}"

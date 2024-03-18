@@ -14,8 +14,8 @@ public struct CodableColor {
     public let alpha: CGFloat
     
     // Initialise from a
-    public init(_ hexString: String) throws {
-        self.hexString = try CodableColor.correctHexColor(hexString)
+    public init(_ hexString: String) {
+        self.hexString = CodableColor.correctHexColor(hexString)
         (red, green, blue, alpha) = CodableColor.hexToRGB(hexString)
     }
     
@@ -26,7 +26,7 @@ public struct CodableColor {
     }
     
     // This color `is light` and you would likely have better `accessible contrast` if you put `dark text` on top of this color
-    public var isLight: Bool? {
+    public var isLight: Bool {
         luminance >= 0.6
     }
 
@@ -69,7 +69,7 @@ public struct CodableColor {
     ///       <1 will make a darker color
     ///       >1 will make a lighter color
     /// - Returns: a CodableColor with the new lightness
-    public func applying(lightness value: CGFloat) throws -> CodableColor {
+    public func applying(lightness value: CGFloat) -> CodableColor {
         var (hue, saturation, lightness, alpha) = hsla
         lightness *= value
         let offset = saturation * (lightness < 0.5 ? lightness : 1 - lightness)
@@ -84,7 +84,7 @@ public struct CodableColor {
             hexString = CodableColor.rgbToHex(red: r, green: g, blue: b, alpha: a)
         }
         
-        return try CodableColor(hexString)
+        return CodableColor(hexString)
 
     }
 }
@@ -99,7 +99,7 @@ extension CodableColor: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let string = try container.decode(String.self)
-        self.hexString = try CodableColor.correctHexColor(string)
+        self.hexString = CodableColor.correctHexColor(string)
         (red, green, blue, alpha) = CodableColor.hexToRGB(hexString)
     }
     
@@ -271,15 +271,15 @@ public extension CodableColor {
 }
 
 private extension CodableColor {
-    static func correctHexColor(_ value: String) throws -> String {
+    static func correctHexColor(_ value: String) -> String {
         var value = value
         if !value.hasPrefix("#") {
             value = "#" + value
         }
-        if ![4, 7, 9].contains(value.count) {
-            struct InvalidHexColor: Error {}
-            throw InvalidHexColor()
-        }
+//        if ![4, 7, 9].contains(value.count) {
+//            struct InvalidHexColor: Error {}
+//            throw InvalidHexColor()
+//        }
         return value
     }
 }
