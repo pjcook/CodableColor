@@ -260,6 +260,19 @@ final class ColorSystemTests: XCTestCase {
         }
     }
     
+    func test_hsbToRGB() throws {
+        for color in colors {
+            let hexColor = try CodableColor(color)
+            let (r1, g1, b1, a1) = hexColor.rgba
+            let (h2, s2, b2, a2) = hexColor.hsba
+            let (r3, g3, b3, a3) = CodableColor.hsbToRGB(hue: h2, saturation: s2, brightness: b2, alpha: a2)
+            XCTAssertEqual(r1, r3)
+            XCTAssertEqual(g1.rounded(to: 9), g3.rounded(to: 9))
+            XCTAssertEqual(b1.rounded(to: 9), b3.rounded(to: 9))
+            XCTAssertEqual(a1, a3)
+        }
+    }
+    
     func test_correctHexColor() throws {
         let hexColor1 = try CodableColor("E40046")
         XCTAssertEqual("#E40046", hexColor1.hexString)
@@ -316,6 +329,31 @@ final class ColorSystemTests: XCTestCase {
         XCTAssertEqual(hexColor1.green, hexColor2.green)
         XCTAssertEqual(hexColor1.blue, hexColor2.blue)
         XCTAssertEqual(hexColor1.alpha, hexColor2.alpha)
+    }
+    
+    func test_lightness() throws {
+        let lightnesses = [
+            "#E40046": ["#160006", "#2D000D", "#440014", "#5B001B", "#720022"],
+            "#F3F3F3": ["#181818", "#303030", "#484848", "#616161", "#797979"],
+            "#F7F7F7": ["#181818", "#313131", "#4A4A4A", "#626262", "#7B7B7B"],
+            "#FFFFFF": ["#191919", "#333333", "#4C4C4C", "#666666", "#7F7F7F"],
+            "#000000": ["#000000", "#000000", "#000000", "#000000", "#000000"],
+            "#711C46": ["#0B0206", "#16050D", "#210814", "#2D0B1B", "#380D23"],
+            "#E0E6EA": ["#12171B", "#242F36", "#374751", "#495F6D", "#5C7688"],
+            "#EED29E": ["#211705", "#432F0B", "#654711", "#865F17", "#A8771D"],
+            "#EBE3DC": ["#1C1610", "#392C21", "#564331", "#735942", "#906F52"],
+            "#DBEBE7": ["#101D19", "#203A33", "#30574D", "#407467", "#519181"],
+        ]
+        
+        let variantLightness = [0.1, 0.2, 0.3, 0.4, 0.5]
+        
+        for color in colors {
+            let hexColor1 = try CodableColor(color)
+            for (variance, expectedResult) in zip(variantLightness, lightnesses[color]!) {
+                let lighterColor = try hexColor1.applying(lightness: variance)
+                XCTAssertEqual(lighterColor.hexString, expectedResult)
+            }
+        }
     }
     
     func test_json() throws {

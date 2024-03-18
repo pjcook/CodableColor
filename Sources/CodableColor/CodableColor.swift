@@ -62,6 +62,31 @@ public struct CodableColor {
         let (red, green, blue, alpha) = rgba
         return CodableColor.rgbToHSB(red: red, green: green, blue: blue, alpha: alpha)
     }
+    
+    /// Amends a the colors lightness value to return a lighter/ darker version of the color
+    ///
+    /// - Parameter value: A multiplier of the existing colors lightness values
+    ///       <1 will make a darker color
+    ///       >1 will make a lighter color
+    /// - Returns: a CodableColor with the new lightness
+    public func applying(lightness value: CGFloat) throws -> CodableColor {
+        var (hue, saturation, lightness, alpha) = hsla
+        lightness *= value
+        let offset = saturation * (lightness < 0.5 ? lightness : 1 - lightness)
+        let brightness = lightness + offset
+        saturation = lightness > 0 ? 2 * offset / brightness : 0
+        
+        let (r, g, b, a) = CodableColor.hsbToRGB(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
+        var hexString: String = ""
+        if alpha == 1 {
+            hexString = CodableColor.rgbToHex(red: r, green: g, blue: b)
+        } else {
+            hexString = CodableColor.rgbToHex(red: r, green: g, blue: b, alpha: a)
+        }
+        
+        return try CodableColor(hexString)
+
+    }
 }
 
 extension CodableColor: CustomStringConvertible {
@@ -163,6 +188,50 @@ public extension CodableColor {
         let saturation = maxV == 0 ? 0 : (delta / maxV)
         let brightness = maxV
         return (hue, saturation, brightness, alpha)
+    }
+    
+    // Convert HSBA to RGBA
+    static func hsbToRGB(hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) -> (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        
+        let i = floor(hue * 6)
+        let f = hue * 6 - i
+        let p = brightness * (1 - saturation)
+        let q = brightness * (1 - f * saturation)
+        let t = brightness * (1 - (1 - f) * saturation)
+        
+        switch i.truncatingRemainder(dividingBy: 6) {
+            case 0:
+                red = brightness
+                green = t
+                blue = p
+            case 1:
+                red = q
+                green = brightness
+                blue = p
+            case 2:
+                red = p
+                green = brightness
+                blue = t
+            case 3:
+                red = p
+                green = q
+                blue = brightness
+            case 4:
+                red = t
+                green = p
+                blue = brightness
+            case 5:
+                red = brightness
+                green = p
+                blue = q
+            default:
+                break
+        }
+        
+        return (red, green, blue, alpha)
     }
     
     // Convert Hex string to RGBA, returns `black` is color was invalid / could not be parsed correctly
