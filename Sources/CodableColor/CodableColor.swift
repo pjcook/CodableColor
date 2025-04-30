@@ -6,7 +6,7 @@ import Foundation
 // https://en.wikipedia.org/wiki/HSL_and_HSV#:~:text=HSL%20stands%20for%20hue%2C%20saturation,hue%2C%20saturation%2C%20and%20intensity.
 
 // CodableColor provides a platform independent color object that can be easily serialized and deserialized whilst also providing equivalent functions and functionality to UIColor
-public struct CodableColor {
+public struct CodableColor: Sendable {
     public let hexString: String
     public let red: CGFloat
     public let green: CGFloat
